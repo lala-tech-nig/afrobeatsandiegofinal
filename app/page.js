@@ -1,5 +1,6 @@
 import CalendarWithEvents from "@/components/CalendarWithEvents";
 import { NavbarDemo } from "@/components/Navbar";
+import WhatsPoppinSection from "@/components/WhatsPoppinSection";
 import Image from "next/image";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
           <NavbarDemo />
       </div>
       <CalendarWithEvents />
+      <WhatsPoppinSection />
     </main>
   );
 }

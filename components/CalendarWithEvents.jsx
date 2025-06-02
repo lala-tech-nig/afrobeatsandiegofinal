@@ -68,9 +68,9 @@ const CalendarWithEvents = () => {
 
   return (
     <div
-      className="p-2 bg-gradient-to-br from-purple-600 to-blue-600 max-w-[99vw] w-[99vw] mx-auto mt-0"
+      className="p-8 bg-gradient-to-br from-purple-600 to-blue-600 max-w-[99vw] w-[99vw] mx-auto mt-0"
       style={{
-        borderWidth: "0.2px", // 90% reduction from 2px
+        borderWidth: "2px", // 90% reduction from 2px
         boxSizing: "border-box",
         borderStyle: "solid",
         borderColor: "#a21caf", // purple-500
