@@ -67,8 +67,16 @@ const CalendarWithEvents = () => {
   const selectedEvents = events[selectedDate] || [];
 
   return (
-    <div className="rounded-2xl p-4 bg-gradient-to-br from-purple-600 to-blue-600 ring-2 ring-offset-4 ring-offset-gray-900 ring-purple-500 max-w-5xl mx-auto mt-10">
-      <div className="bg-black p-4 rounded-2xl flex flex-col md:flex-row gap-6">
+    <div
+      className="p-2 bg-gradient-to-br from-purple-600 to-blue-600 max-w-[99vw] w-[99vw] mx-auto mt-0"
+      style={{
+        borderWidth: "0.2px", // 90% reduction from 2px
+        boxSizing: "border-box",
+        borderStyle: "solid",
+        borderColor: "#a21caf", // purple-500
+      }}
+    >
+      <div className="bg-black p-2 rounded-2xl flex flex-col md:flex-row gap-6">
         {/* Calendar */}
         <div className="w-full md:w-1/3 text-white">
           <div className="flex items-center justify-between mb-4">
@@ -90,17 +98,36 @@ const CalendarWithEvents = () => {
           {selectedEvents.length === 0 ? (
             <p className="text-gray-300">No events scheduled.</p>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {selectedEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white/10 backdrop-blur-md text-white rounded-xl p-4 flex items-center gap-4 hover:bg-white/20 cursor-pointer"
                   onClick={() => setSelectedEvent(event)}
+                  className="p-[2px] rounded-2xl bg-gradient-to-r from-purple-500 via-blue-500 to-green-400 shadow-lg cursor-pointer transition-transform hover:scale-[1.01]"
                 >
-                  <img src={event.thumbnail} alt={event.title} className="w-16 h-16 rounded-lg object-cover" />
-                  <div>
-                    <h4 className="font-bold text-lg">{event.title}</h4>
-                    <p className="text-sm text-gray-300">{event.time}</p>
+                  <div className="bg-white rounded-2xl p-4 h-full flex flex-col">
+                    {/* Event Image */}
+                    <img
+                      src={event.thumbnail}
+                      alt={event.title}
+                      className="w-full h-40 object-contain rounded-xl"
+                    />
+
+                    {/* Event Title */}
+                    <h3 className="mt-3 text-lg font-semibold text-gray-900">
+                      {event.title}
+                    </h3>
+
+                    {/* Event Time */}
+                    <p className="text-sm text-gray-500 mt-1">{event.time}</p>
+
+                    {/* Optional CTA */}
+                    <button className="mt-4 self-start px-4 py-1.5 rounded-full bg-black text-white font-semibold text-sm inline-flex items-center gap-2">
+                      View details
+                      <span className="text-xs px-2 py-0.5 bg-white text-black rounded-full font-bold">
+                        Free
+                      </span>
+                    </button>
                   </div>
                 </div>
               ))}
