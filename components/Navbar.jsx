@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import SpotifyPlayer from "./SpotifyPlayer";
 import ImageCarousel from "./ImageCarousel";
+import WeatherTimeWidget from "./WeatherTimeWidget";
 
 export function NavbarDemo() {
   const navItems = [
@@ -43,6 +44,7 @@ export function NavbarDemo() {
   return (
     <div className="relative w-full">
       <Navbar>
+        <WeatherTimeWidget />
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />

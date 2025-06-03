@@ -17,6 +17,28 @@ export default function Home() {
   const [error, setError] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
 
+  // Determine San Diego time and set navbar background
+  const [navbarBg, setNavbarBg] = useState("/navbar.png");
+
+  useEffect(() => {
+    // San Diego is UTC-7 (PDT) or UTC-8 (PST), but for simplicity, use UTC-7
+    const getSanDiegoHour = () => {
+      const now = new Date();
+      // Get UTC hour and subtract 7 for PDT
+      let utcHour = now.getUTCHours();
+      let sanDiegoHour = utcHour - 7;
+      if (sanDiegoHour < 0) sanDiegoHour += 24;
+      return sanDiegoHour;
+    };
+
+    const hour = getSanDiegoHour();
+    if (hour >= 6 && hour < 18) {
+      setNavbarBg("/navbar1.png"); // Daytime
+    } else {
+      setNavbarBg("/navbar.png"); // Nighttime
+    }
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const hasEmail = localStorage.getItem("afrobeat_email_submitted");
@@ -121,7 +143,10 @@ export default function Home() {
         </div>
       )}
 
-      <div className="min-h-screen bg-[url('/navbar.png')] bg-cover bg-center bg-no-repeat flex flex-col items-center">
+      <div
+        className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col items-center"
+        style={{ backgroundImage: `url('${navbarBg}')` }}
+      >
         <NavbarDemo />
       </div>
       <CalendarWithEvents />
