@@ -14,7 +14,8 @@ const events = {
       time: "10:00 AM",
       thumbnail: "/event1.jpg",
       image: "/event1.jpg",
-      description: "Join us at the annual Tech Expo showcasing future innovations."
+      description:
+        "Join us at the annual Tech Expo showcasing future innovations.",
     },
     {
       id: 2,
@@ -22,8 +23,8 @@ const events = {
       time: "2:00 PM",
       thumbnail: "/event2.jpg",
       image: "/event2.jpg",
-      description: "Hands-on design workshop with top industry experts."
-    }
+      description: "Hands-on design workshop with top industry experts.",
+    },
   ],
   // Add more events as needed
 };
@@ -32,7 +33,9 @@ const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
 
 const CalendarWithEvents = () => {
   const today = new Date();
-  const [currentDate, setCurrentDate] = useState(new Date(today.getFullYear(), today.getMonth()));
+  const [currentDate, setCurrentDate] = useState(
+    new Date(today.getFullYear(), today.getMonth())
+  );
   const [selectedDate, setSelectedDate] = useState(format(today, "yyyy-MM-dd"));
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -46,7 +49,12 @@ const CalendarWithEvents = () => {
 
   const renderDays = () => {
     const days = [];
-    for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`} className="text-center"> </div>);
+    for (let i = 0; i < firstDay; i++)
+      days.push(
+        <div key={`empty-${i}`} className="text-center">
+          {" "}
+        </div>
+      );
     for (let d = 1; d <= totalDays; d++) {
       const dateKey = format(new Date(year, month, d), "yyyy-MM-dd");
       days.push(
@@ -54,7 +62,9 @@ const CalendarWithEvents = () => {
           key={d}
           onClick={() => setSelectedDate(dateKey)}
           className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
-            selectedDate === dateKey ? "bg-white text-black" : "hover:bg-white/20 text-white"
+            selectedDate === dateKey
+              ? "bg-white text-black"
+              : "hover:bg-white/20 text-white"
           }`}
         >
           {d}
@@ -68,25 +78,28 @@ const CalendarWithEvents = () => {
 
   return (
     <div
-      className="p-8 bg-gradient-to-br from-purple-600 to-blue-600 max-w-[99vw] w-[99vw] mx-auto mt-0"
-      style={{
-        borderWidth: "2px", // 90% reduction from 2px
-        boxSizing: "border-box",
-        borderStyle: "solid",
-        borderColor: "#a21caf", // purple-500
-      }}
+      className="w-full bg-cover bg-center bg-no-repeat p-8 mx-auto mt-0"
+      style={{ backgroundImage: `url('/africabg.png')` }}
     >
       <div className="bg-black p-2 rounded-2xl flex flex-col md:flex-row gap-6">
         {/* Calendar */}
         <div className="w-full md:w-1/3 text-white">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={prevMonth}><ChevronLeft /></button>
-            <h2 className="text-lg font-bold">{format(currentDate, "MMMM yyyy")}</h2>
-            <button onClick={nextMonth}><ChevronRight /></button>
+            <button onClick={prevMonth}>
+              <ChevronLeft />
+            </button>
+            <h2 className="text-lg font-bold">
+              {format(currentDate, "MMMM yyyy")}
+            </h2>
+            <button onClick={nextMonth}>
+              <ChevronRight />
+            </button>
           </div>
           <div className="grid grid-cols-7 gap-2 text-sm mb-2">
             {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
-              <div key={d} className="text-center font-bold">{d}</div>
+              <div key={d} className="text-center font-bold">
+                {d}
+              </div>
             ))}
             {renderDays()}
           </div>
@@ -94,7 +107,9 @@ const CalendarWithEvents = () => {
 
         {/* Events */}
         <div className="w-full md:w-2/3">
-          <h3 className="text-white font-semibold mb-2">Events on {selectedDate}</h3>
+          <h3 className="text-white font-semibold mb-2">
+            Events on {selectedDate}
+          </h3>
           {selectedEvents.length === 0 ? (
             <p className="text-gray-300">No events scheduled.</p>
           ) : (
@@ -138,10 +153,21 @@ const CalendarWithEvents = () => {
 
       {/* Modal */}
       {selectedEvent && (
-        <Dialog open={true} onClose={() => setSelectedEvent(null)} className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedEvent(null)}></div>
+        <Dialog
+          open={true}
+          onClose={() => setSelectedEvent(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+        >
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setSelectedEvent(null)}
+          ></div>
           <div className="relative bg-white rounded-2xl p-6 max-w-lg mx-auto z-50">
-            <img src={selectedEvent.image} alt={selectedEvent.title} className="w-full h-64 object-cover rounded-xl mb-4" />
+            <img
+              src={selectedEvent.image}
+              alt={selectedEvent.title}
+              className="w-full h-64 object-cover rounded-xl mb-4"
+            />
             <h2 className="text-xl font-bold mb-2">{selectedEvent.title}</h2>
             <p className="text-sm text-gray-600 mb-2">{selectedEvent.time}</p>
             <p className="text-gray-800">{selectedEvent.description}</p>
