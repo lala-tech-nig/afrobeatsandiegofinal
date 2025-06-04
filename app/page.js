@@ -5,8 +5,9 @@ import { NavbarDemo } from "@/components/Navbar";
 import WhatsPoppinSection from "@/components/WhatsPoppinSection";
 import Image from "next/image";
 
-// Import react-confetti for confetti effect
+
 import dynamic from "next/dynamic";
+import ShoppingSection from "@/components/ShoppingSection";
 const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 
 export default function Home() {
@@ -151,6 +152,7 @@ export default function Home() {
       </div>
       <CalendarWithEvents />
       <WhatsPoppinSection />
+      <ShoppingSection />
     </main>
   );
 }

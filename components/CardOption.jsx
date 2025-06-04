@@ -3,7 +3,7 @@ import { CheckCircle } from 'lucide-react';
 
 const VideoCard = () => {
   const handleClick = () => {
-    window.open("https://www.youtube.com/", "_blank");
+    window.open("https://www.facebook.com/", "_blank");
   };
 
   return (
