@@ -34,7 +34,7 @@ export default function ConnectForm() {
   };
 
   return (
-    <section className="w-full min-h-[300px] bg-gradient-to-r from-black via-purple-900 to-black text-white flex items-center justify-center px-4 py-10 relative overflow-hidden">
+    <section className="w-full min-h-[300px] rounded-2xl bg-gradient-to-r from-black via-purple-900 to-black text-white flex items-center justify-center px-4 py-10 relative overflow-hidden">
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
       <div className="max-w-3xl w-full p-6 bg-black/40 rounded-xl backdrop-blur-md shadow-2xl border border-purple-700 space-y-6 text-lg">
         {!submitted ? (
