@@ -16,7 +16,7 @@ export function LensDemoThird() {
           <Beams />
           <div className="relative z-10">
             <img
-              src="/afrobeatcup.jpg"
+              src="/shirt.jpg"
               alt="image"
               width={500}
               height={500}
@@ -24,12 +24,25 @@ export function LensDemoThird() {
 
             <motion.div className="py-4 relative z-20">
               <h2 className="text-white text-2xl text-left font-bold">
-                Apple Vision Pro
+                AfroBeat San Diego Shirt
               </h2>
-              <p className="text-neutral-200 text-left  mt-4">
-                The all new apple vision pro was the best thing that happened
-                around 8 months ago, not anymore.
+              <p className="text-neutral-200 text-left mt-4">
+                The all new interesting and exciting Afrobeat San Diego Shirt is here!
               </p>
+              <div className="mt-6 flex w-full gap-3">
+                <button
+                  className="flex-1 bg-gray-800 text-white font-bold py-3 px-6 rounded-xl cursor-default"
+                  disabled
+                >
+                  $25
+                </button>
+                <button
+                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl transition"
+                  onClick={() => window.open('https://your-purchase-link.com', '_blank')}
+                >
+                  Purchase
+                </button>
+              </div>
             </motion.div>
           </div>
         </div>
