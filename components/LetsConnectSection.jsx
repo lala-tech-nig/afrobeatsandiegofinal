@@ -1,8 +1,12 @@
 import React from 'react'
+import ConnectForm from './ConnectForm'
+
 
 const LetsConnectSection = () => {
   return (
-    <div>LetsConnectSection</div>
+    <section className="py-10 px-6">
+        <ConnectForm />
+    </section>
   )
 }
 
