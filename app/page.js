@@ -9,6 +9,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import ShoppingSection from "@/components/ShoppingSection";
 import LetsConnectSection from "@/components/LetsConnectSection";
+import FooterSection from "@/components/FooterSection";
 const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 
 export default function Home() {
@@ -155,6 +156,7 @@ export default function Home() {
       <WhatsPoppinSection />
       <ShoppingSection />
       <LetsConnectSection />
+      <FooterSection />
     </main>
   );
 }
