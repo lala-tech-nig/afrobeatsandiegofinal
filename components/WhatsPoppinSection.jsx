@@ -8,7 +8,7 @@ const LOAD_MORE_COUNT = 4;
 const WhatsPoppinSection = () => {
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
   const [loading, setLoading] = useState(false);
-
+  
   // Simulate loading more cards (replace with real data if needed)
   const handleLoadMore = () => {
     setLoading(true);
