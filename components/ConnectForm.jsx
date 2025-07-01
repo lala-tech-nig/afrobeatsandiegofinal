@@ -5,7 +5,7 @@ import Confetti from 'react-confetti';
 
 const roles = ['DJ', 'Rapper', 'Dancer', 'Promoter', 'Others'];
 
-export default function ConnectForm() {
+export default function ConnectForm({ onSubmit }) {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
@@ -29,7 +29,7 @@ export default function ConnectForm() {
   const handleSubmit = () => {
     setSubmitted(true);
     setShowConfetti(true);
-    console.log('Form submitted:', formData);
+    if (onSubmit) onSubmit(); // <-- Call parent onSubmit to close modal
     setTimeout(() => setShowConfetti(false), 5000);
   };
 
@@ -204,7 +204,7 @@ export default function ConnectForm() {
           padding: 10px 20px;
           border-radius: 6px;
           color: white;
-          transition: 0.3s;
+          transition: 3s;
         }
         .btn:hover {
           background-color: #6b21a8;

@@ -8,6 +8,7 @@ import LetsConnectSection from "@/components/LetsConnectSection";
 import FooterSection from "@/components/FooterSection";
 import dynamic from "next/dynamic";
 const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
+import ConnectForm from "@/components/ConnectForm";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -30,9 +31,10 @@ export default function Home() {
       setNavbarBg("/navbar.png");
     }
 
+    // Show modal after 10s if not submitted before
     const timer = setTimeout(() => {
       if (typeof window !== "undefined") {
-        const submitted = localStorage.getItem("LetsConnectFormSubmitted");
+        const submitted = localStorage.getItem("connectFormSubmitted");
         if (!submitted) setShowModal(true);
       }
     }, 10000);
@@ -40,16 +42,16 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Handler for successful form submission with fade out
+  // Handler for successful form submission with fade out and 3s delay
   const handleFormSubmit = () => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("LetsConnectFormSubmitted", "true");
+      localStorage.setItem("connectFormSubmitted", "true");
     }
     setModalFadeOut(true);
     setTimeout(() => {
       setShowModal(false);
       setModalFadeOut(false);
-    }, 400); // Match the transition duration
+    }, 3000); // 3 seconds transition out
   };
 
   return (
@@ -68,8 +70,8 @@ export default function Home() {
 
       {/* Modal */}
       {showModal && (
-        <div className={`fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-400 ${modalFadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-          <div className={`relative w-full max-w-lg mx-4 rounded-xl shadow-lg p-6 bg-white transform transition-all duration-400 ${modalFadeOut ? "scale-95 opacity-0" : "scale-100 opacity-100"}`}>
+        <div className={`fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-1000 ${modalFadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+          <div className={`relative w-full max-w-lg mx-4 rounded-xl shadow-lg p-6 bg-white transform transition-all duration-1000 ${modalFadeOut ? "scale-95 opacity-0" : "scale-100 opacity-100"}`}>
             <button
               className="absolute top-3 right-3 text-xl font-bold text-gray-700 hover:text-red-600"
               onClick={() => setShowModal(false)}
@@ -77,8 +79,8 @@ export default function Home() {
             >
               &times;
             </button>
-            {/* Pass onSubmit prop to ConnectForm */}
-            <LetsConnectSection onSubmit={handleFormSubmit} />
+            <h1>Let's connect</h1>
+            <ConnectForm onSubmit={handleFormSubmit} />
           </div>
         </div>
       )}
