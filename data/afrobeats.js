@@ -2,7 +2,7 @@
 const afrobeatsData = [
   {
     id: 1,
-    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Rema_performing_in_2023.jpg",
+    thumbnail: "https://www.okayafrica.com/media-library/rema-samples-sade-on-baby-is-it-a-crime.jpg?id=56315536&width=1200&height=800&quality=80&coordinates=0%2C0%2C0%2C0",
     trending: true,
     title: "\"Baby (Is It A Crime)\" by Rema becomes most streamed Nigerian song of 2025",
     profileImage: "post.jpeg",
@@ -13,7 +13,7 @@ const afrobeatsData = [
   },
   {
     id: 2,
-    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/e/e1/Wizkid_at_the_Made_in_Lagos_Tour_%28cropped%29.jpg",
+    thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI8XXMAhHa3flJeNYE-PBZM4vCOf2hEuGH-A&s",
     trending: true,
     title: "\"Kai!\" single by Olamide & Wizkid hits #9 on TurnTable Top 100",
     profileImage: "post.jpeg",
@@ -24,7 +24,7 @@ const afrobeatsData = [
   },
   {
     id: 3,
-    thumbnail: "https://upload.wikimedia.org/wikipedia/commons/f/f2/Burna_Boy_2021.jpg",
+    thumbnail: "https://media.pitchfork.com/photos/682e17b3892c0dad0085b362/2:1/w_1600,c_limit/Burna-Boy-Travis-Scott.jpeg",
     trending: true,
     title: "Burna Boy's \"No Sign of Weakness\" album drops July 10, featuring \"TaTaTa\" with Travis Scott",
     profileImage: "post.jpeg",
@@ -35,7 +35,7 @@ const afrobeatsData = [
   },
   {
     id: 4,
-    thumbnail: "https://www.musicinafrica.net/sites/default/files/images/article/202305/seyi_vibez_main.jpg",
+    thumbnail: "https://www.tv360nigeria.com/wp-content/uploads/IMG_3719-1-780x470.jpeg",
     trending: false,
     title: "Chella's \"My Darling\" tops Nigeria Top 100 & Shazam Global chart",
     profileImage: "post.jpeg",
