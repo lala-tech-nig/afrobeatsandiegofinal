@@ -7,7 +7,7 @@ const SpotifyPlaylistEmbed = () => {
     <iframe
       data-testid="embed-iframe"
       style={{ borderRadius: '12px' }}
-      src="https://open.spotify.com/embed/playlist/3NyG2f4X9RcMJAXIxYHH5X?utm_source=generator"
+      src="https://open.spotify.com/embed/playlist/3d6OsqwE5rMUgydM4qEY2U?utm_source=generator"
       width="100%"
       height="152"
       frameBorder="0"
