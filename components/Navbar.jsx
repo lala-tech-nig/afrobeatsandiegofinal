@@ -11,9 +11,10 @@ import {
   MobileNavMenu,
 } from "@/components/ui/resizable-navbar";
 import { useState } from "react";
-import SpotifyPlayer from "./SpotifyPlayer";
+// import SpotifyPlayer from "./SpotifyPlayer";
 import ImageCarousel from "./ImageCarousel";
 import WeatherTimeWidget from "./WeatherTimeWidget";
+import SpotifyPlaylistEmbed from "./Player";
 
 export function NavbarDemo() {
   const navItems = [
@@ -94,7 +95,7 @@ export function NavbarDemo() {
       {/* spotify */}
       <div className="w-full flex flex-col items-center px-4 py-8 space-y-8">
         <div className="mt-14">
-            <SpotifyPlayer />
+            <SpotifyPlaylistEmbed />
         </div>
         
         {/* carousel */}
