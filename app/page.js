@@ -9,6 +9,7 @@ import FooterSection from "@/components/FooterSection";
 import dynamic from "next/dynamic";
 const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 import ConnectForm from "@/components/ConnectForm";
+import ShoppingSectionNew from "@/components/ShoppingSectionNew";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -64,7 +65,8 @@ export default function Home() {
       </div>
       <CalendarWithEvents />
       <WhatsPoppinSection />
-      <ShoppingSection />
+      {/* <ShoppingSection /> */}
+      <ShoppingSectionNew />
       <LetsConnectSection />
       <FooterSection />
 
