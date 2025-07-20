@@ -14,6 +14,7 @@ const events = {
       time: "10:00 AM",
       thumbnail: "/event1.jpg",
       image: "/event1.jpg",
+      link: "https:facebook.com",
       description:
         "Join us at the annual Tech Expo showcasing future innovations.",
     },
@@ -23,6 +24,7 @@ const events = {
       time: "2:00 PM",
       thumbnail: "/event2.jpg",
       image: "/event2.jpg",
+      link: "https:facebook.com",
       description: "Hands-on design workshop with top industry experts.",
     },
   ],
@@ -33,6 +35,7 @@ const events = {
       time: "10:00 AM",
       thumbnail: "/event1.jpg",
       image: "/event1.jpg",
+      link: "https:facebook.com",
       description:
         "Join us at the annual Tech Expo showcasing future innovations.",
     },
@@ -42,6 +45,7 @@ const events = {
       time: "2:00 PM",
       thumbnail: "/event2.jpg",
       image: "/event2.jpg",
+      link: "https:facebook.com",
       description: "Hands-on design workshop with top industry experts.",
     },
   ],
@@ -52,6 +56,7 @@ const events = {
       time: "10:00 AM",
       thumbnail: "/event1.jpg",
       image: "/event1.jpg",
+      link: "https:facebook.com",
       description:
         "Join us at the annual Tech Expo showcasing future innovations.",
     },
@@ -61,6 +66,7 @@ const events = {
       time: "2:00 PM",
       thumbnail: "/event2.jpg",
       image: "/event2.jpg",
+      link: "https:facebook.com",
       description: "Hands-on design workshop with top industry experts.",
     },
   ],
@@ -71,6 +77,7 @@ const events = {
       time: "10:00 AM",
       thumbnail: "/event1.jpg",
       image: "/event1.jpg",
+      link: "https:facebook.com",
       description:
         "Join us at the annual Tech Expo showcasing future innovations.",
     },
@@ -80,6 +87,7 @@ const events = {
       time: "2:00 PM",
       thumbnail: "/event2.jpg",
       image: "/event2.jpg",
+      link: "https:facebook.com",
       description: "Hands-on design workshop with top industry experts.",
     },
   ],
@@ -437,13 +445,23 @@ const CalendarWithEvents = () => {
               <span>{selectedEvent.location}</span>
               <span>{selectedEvent.phone}</span>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setSelectedEvent(null)}
-                className="w-full px-4 py-2 rounded-md bg-purple-600 text-white font-semibold transition hover:bg-purple-700"
+                className="w-full sm:w-auto px-4 py-2 rounded-md bg-gray-200 text-black font-semibold transition hover:bg-gray-300"
               >
                 Close
               </button>
+              {selectedEvent?.link && (
+                <a
+                  href={selectedEvent.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-4 py-2 rounded-md bg-purple-600 text-white font-semibold transition hover:bg-purple-700 text-center"
+                >
+                  Register
+                </a>
+              )}
             </div>
           </div>
         </Dialog>
