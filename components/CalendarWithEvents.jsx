@@ -7,7 +7,64 @@ import { Dialog } from "@headlessui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const events = {
-  "2025-06-02": [
+  "2025-07-21": [
+    {
+      id: 1,
+      title: "Tech Expo 2025",
+      time: "10:00 AM",
+      thumbnail: "/event1.jpg",
+      image: "/event1.jpg",
+      description:
+        "Join us at the annual Tech Expo showcasing future innovations.",
+    },
+    {
+      id: 2,
+      title: "UI/UX Workshop",
+      time: "2:00 PM",
+      thumbnail: "/event2.jpg",
+      image: "/event2.jpg",
+      description: "Hands-on design workshop with top industry experts.",
+    },
+  ],
+    "2025-07-24": [
+    {
+      id: 1,
+      title: "Tech Expo 2025",
+      time: "10:00 AM",
+      thumbnail: "/event1.jpg",
+      image: "/event1.jpg",
+      description:
+        "Join us at the annual Tech Expo showcasing future innovations.",
+    },
+    {
+      id: 2,
+      title: "UI/UX Workshop",
+      time: "2:00 PM",
+      thumbnail: "/event2.jpg",
+      image: "/event2.jpg",
+      description: "Hands-on design workshop with top industry experts.",
+    },
+  ],
+    "2025-07-26": [
+    {
+      id: 1,
+      title: "Tech Expo 2025",
+      time: "10:00 AM",
+      thumbnail: "/event1.jpg",
+      image: "/event1.jpg",
+      description:
+        "Join us at the annual Tech Expo showcasing future innovations.",
+    },
+    {
+      id: 2,
+      title: "UI/UX Workshop",
+      time: "2:00 PM",
+      thumbnail: "/event2.jpg",
+      image: "/event2.jpg",
+      description: "Hands-on design workshop with top industry experts.",
+    },
+  ],
+    "2025-07-30": [
     {
       id: 1,
       title: "Tech Expo 2025",
@@ -81,19 +138,27 @@ const CalendarWithEvents = () => {
         </div>
       );
     for (let d = 1; d <= totalDays; d++) {
-      const dateKey = format(new Date(year, month, d), "yyyy-MM-dd");
+      const dateObj = new Date(year, month, d);
+      const dateKey = format(dateObj, "yyyy-MM-dd");
+      const hasEvent = !!events[dateKey] && events[dateKey].length > 0;
       days.push(
-        <button
-          key={d}
-          onClick={() => setSelectedDate(dateKey)}
-          className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
-            selectedDate === dateKey
-              ? "bg-white text-black"
-              : "hover:bg-white/20 text-white"
-          }`}
-        >
-          {d}
-        </button>
+        <div key={d} className="flex flex-col items-center">
+          <button
+            onClick={() => setSelectedDate(dateKey)}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition mb-0.5 ${
+              selectedDate === dateKey
+                ? "bg-white text-black"
+                : "hover:bg-white/20 text-white"
+            }`}
+          >
+            {d}
+          </button>
+          {hasEvent && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 text-white font-semibold mt-0.5">
+              event
+            </span>
+          )}
+        </div>
       );
     }
     return days;
