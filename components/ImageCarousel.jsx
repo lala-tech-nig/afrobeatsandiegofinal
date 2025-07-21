@@ -31,14 +31,15 @@ export default function ImageCarousel() {
   return (
     <div className="w-full max-w-5xl px-4 mb-8">
       <Slider {...settings}>
-        {images.map((src, index) => (
-          <div key={index}>
+        {images.map((img, index) => (
+          <div key={img._id || index}>
             <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden">
               <Image
-                src={src}
+                src={`https://afrobeatsandiegobackend.onrender.com${img.imageUrl}`}
                 alt={`Slide ${index + 1}`}
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, 800px"
               />
             </div>
           </div>
