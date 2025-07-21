@@ -1,16 +1,22 @@
 // components/ImageCarousel.js
 'use client';
 
+import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import Image from 'next/image';
 
-const images = [
-  '/slide1.jpg',
-  '/slide2.jpg',
-  '/slide3.jpg',
-];
-
 export default function ImageCarousel() {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    // Replace with your actual API endpoint
+    fetch('https://afrobeatsandiegobackend.onrender.com/api/carousel')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setImages(data);
+      });
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
