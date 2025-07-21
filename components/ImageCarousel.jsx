@@ -35,7 +35,7 @@ export default function ImageCarousel() {
           <div key={img._id || index}>
             <div className="relative w-full h-64 md:h-96 rounded-xl overflow-hidden">
               <Image
-                src={`https://afrobeatsandiegobackend.onrender.com${img.imageUrl}`}
+                src={`https://afrobeatsandiegobackend.onrender.com/${img.imageUrl}`}
                 alt={`Slide ${index + 1}`}
                 fill
                 className="object-cover"
