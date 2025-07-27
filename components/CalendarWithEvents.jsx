@@ -191,23 +191,45 @@ const CalendarWithEvents = () => {
     }
   };
 
-  const handleAddEvent = (e) => {
+  const handleAddEvent = async (e) => {
     e.preventDefault();
-    setShowAddModal(false);
-    setAddForm({
-      name: "",
-      email: "",
-      eventTitle: "",
-      eventDetails: "",
-      eventDate: "",
-      phone: "",
-      location: "",
-      image: null,
-      imageUrl: "",
-    });
-    setShowToast(true);
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setShowToast(false), 4000);
+
+    // Prepare form data for file upload
+    const formData = new FormData();
+    formData.append("name", addForm.name);
+    formData.append("email", addForm.email);
+    formData.append("eventTitle", addForm.eventTitle);
+    formData.append("eventDetails", addForm.eventDetails);
+    formData.append("eventDate", addForm.eventDate);
+    formData.append("phone", addForm.phone);
+    formData.append("location", addForm.location);
+    if (addForm.image) {
+      formData.append("image", addForm.image);
+    }
+
+    try {
+      await fetch("https://afrobeatsandiegobackend.onrender.com/api/calendar", {
+        method: "POST",
+        body: formData,
+      });
+      setShowAddModal(false);
+      setAddForm({
+        name: "",
+        email: "",
+        eventTitle: "",
+        eventDetails: "",
+        eventDate: "",
+        phone: "",
+        location: "",
+        image: null,
+        imageUrl: "",
+      });
+      setShowToast(true);
+      if (toastTimeout.current) clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setShowToast(false), 4000);
+    } catch (error) {
+      alert("Failed to submit event. Please try again.");
+    }
   };
 
   return (
