@@ -30,9 +30,9 @@ export function NavbarDemo() {
   // Modal and Toast State
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     message: "",
   });
   const [showToast, setShowToast] = useState(false);
@@ -45,37 +45,48 @@ export function NavbarDemo() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submit
-  const handleFormSubmit = (e) => {
+  // Handle form submit with API call
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setShowModal(false);
-    setToastName(form.name);
-    setShowToast(true);
-    setForm({ name: "", email: "", phone: "", message: "" });
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setShowToast(false), 4000);
+    try {
+      const response = await fetch("https://afrobeatsandiegobackend.onrender.com/api/forms/book-call", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      const data = await response.json();
+      setShowModal(false);
+      setToastName(form.fullName);
+      setShowToast(true);
+      setForm({ fullName: "", email: "", phoneNumber: "", message: "" });
+      if (toastTimeout.current) clearTimeout(toastTimeout.current);
+      toastTimeout.current = setTimeout(() => setShowToast(false), 4000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to send request. Please try again.");
+    }
   };
 
   return (
     <div className="relative w-full">
       <Navbar>
         <WeatherTimeWidget />
-        {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
-            {/* <NavbarButton variant="secondary">Login</NavbarButton> */}
-            <NavbarButton
-              variant="primary"
-              onClick={() => setShowModal(true)}
-            >
+            <NavbarButton variant="primary" onClick={() => setShowModal(true)}>
               Book a call
             </NavbarButton>
           </div>
         </NavBody>
-
-        {/* Mobile Navigation */}
         <MobileNav>
           <MobileNavHeader>
             <NavbarLogo />
@@ -84,7 +95,6 @@ export function NavbarDemo() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             />
           </MobileNavHeader>
-
           <MobileNavMenu
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
@@ -115,26 +125,16 @@ export function NavbarDemo() {
         </MobileNav>
       </Navbar>
 
-      {/* Book a Call Modal */}
-      <Dialog
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        className="fixed inset-0 z-50 flex items-center justify-center"
-      >
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={() => setShowModal(false)}
-        ></div>
+      <Dialog open={showModal} onClose={() => setShowModal(false)} className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowModal(false)}></div>
         <div className="relative bg-white rounded-2xl p-4 sm:p-8 max-w-xs sm:max-w-md w-[95vw] sm:w-full mx-auto z-50 max-h-[90vh] overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4 text-center text-purple-700">
-            Book a Call
-          </h2>
+          <h2 className="text-xl font-bold mb-4 text-center text-purple-700">Book a Call</h2>
           <form onSubmit={handleFormSubmit} className="space-y-4">
             <input
               type="text"
-              name="name"
+              name="fullName"
               placeholder="Your Name"
-              value={form.name}
+              value={form.fullName}
               onChange={handleFormChange}
               className="w-full p-3 rounded-md border border-purple-500"
               required
@@ -150,9 +150,9 @@ export function NavbarDemo() {
             />
             <input
               type="text"
-              name="phone"
+              name="phoneNumber"
               placeholder="Phone Number"
-              value={form.phone}
+              value={form.phoneNumber}
               onChange={handleFormChange}
               className="w-full p-3 rounded-md border border-purple-500"
               required
@@ -166,17 +166,10 @@ export function NavbarDemo() {
               required
             />
             <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                className="px-4 py-2 rounded bg-gray-200 text-black"
-                onClick={() => setShowModal(false)}
-              >
+              <button type="button" className="px-4 py-2 rounded bg-gray-200 text-black" onClick={() => setShowModal(false)}>
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="px-4 py-2 rounded bg-purple-600 text-white font-bold"
-              >
+              <button type="submit" className="px-4 py-2 rounded bg-purple-600 text-white font-bold">
                 Submit
               </button>
             </div>
@@ -184,22 +177,19 @@ export function NavbarDemo() {
         </div>
       </Dialog>
 
-      {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-6 left-1/2 z-[9999] -translate-x-1/2 bg-gradient-to-r from-purple-600 via-pink-500 to-yellow-400 text-white px-6 py-4 rounded-2xl shadow-lg flex items-center gap-3 animate-fade-in-up">
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4"></path></svg>
-          <span className="font-semibold">
-            Thank you, {toastName}! Our team will reach out to you soon.
-          </span>
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4"></path>
+          </svg>
+          <span className="font-semibold">Thank you, {toastName}! Our team will reach out to you soon.</span>
         </div>
       )}
 
-      {/* spotify */}
       <div className="w-full flex flex-col items-center px-4 py-8 space-y-8">
         <div className="mt-14">
           <SpotifyPlaylistEmbed />
         </div>
-        {/* carousel */}
         <ImageCarousel />
       </div>
     </div>
@@ -209,92 +199,15 @@ export function NavbarDemo() {
 const DummyContent = () => {
   return (
     <div className="container mx-auto p-8 pt-24">
-      <h1 className="mb-4 text-center text-3xl font-bold">
-        Check the navbar at the top of the container
-      </h1>
+      <h1 className="mb-4 text-center text-3xl font-bold">Check the navbar at the top of the container</h1>
       <p className="mb-10 text-center text-sm text-zinc-500">
-        For demo purpose we have kept the position as{" "}
-        <span className="font-medium">Sticky</span>. Keep in mind that this
-        component is <span className="font-medium">fixed</span> and will not
-        move when scrolling.
+        For demo purpose we have kept the position as <span className="font-medium">Sticky</span>. Keep in mind that this
+        component is <span className="font-medium">fixed</span> and will not move when scrolling.
       </p>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        {[
-          {
-            id: 1,
-            title: "The",
-            width: "md:col-span-1",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 2,
-            title: "First",
-            width: "md:col-span-2",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 3,
-            title: "Rule",
-            width: "md:col-span-1",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 4,
-            title: "Of",
-            width: "md:col-span-3",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 5,
-            title: "F",
-            width: "md:col-span-1",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 6,
-            title: "Club",
-            width: "md:col-span-2",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 7,
-            title: "Is",
-            width: "md:col-span-2",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 8,
-            title: "You",
-            width: "md:col-span-1",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 9,
-            title: "Do NOT TALK about",
-            width: "md:col-span-2",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-          {
-            id: 10,
-            title: "F Club",
-            width: "md:col-span-1",
-            height: "h-60",
-            bg: "bg-neutral-100 dark:bg-neutral-800",
-          },
-        ].map((box) => (
-          <div
-            key={box.id}
-            className={`${box.width} ${box.height} ${box.bg} flex items-center justify-center rounded-lg p-4 shadow-sm`}>
-            <h2 className="text-xl font-medium">{box.title}</h2>
+        {[1,2,3,4,5,6,7,8,9,10].map(id => (
+          <div key={id} className="md:col-span-1 h-60 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center rounded-lg p-4 shadow-sm">
+            <h2 className="text-xl font-medium">Box {id}</h2>
           </div>
         ))}
       </div>
