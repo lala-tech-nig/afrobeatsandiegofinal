@@ -7,25 +7,28 @@ const EventCalendar = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch events from API
+  // Normalize a date into YYYY-MM-DD
+  const normalizeDate = (dateString) =>
+    new Date(dateString).toISOString().split("T")[0];
+
+  // Fetch and group events from API
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("https://afrobeatsandiegobackend.onrender.com/api/events"); // change this to your API endpoint
+        const res = await fetch("https://afrobeatsandiegobackend.onrender.com/api/events"); // <-- replace with your backend endpoint
         const json = await res.json();
 
-        // Transform API response into grouped format
         const grouped = {};
         json.data.forEach((event) => {
-          const dateKey = new Date(event.date).toISOString().split("T")[0]; // "2025-09-25"
+          const dateKey = normalizeDate(event.date); // e.g. "2025-09-25"
           if (!grouped[dateKey]) grouped[dateKey] = [];
           grouped[dateKey].push(event);
         });
 
         setEvents(grouped);
 
-        // Auto-select first available date
-        const firstDate = Object.keys(grouped)[0];
+        // auto-select the first available date
+        const firstDate = Object.keys(grouped).sort()[0];
         if (firstDate) setSelectedDate(firstDate);
       } catch (error) {
         console.error("Failed to fetch events:", error);
@@ -38,10 +41,14 @@ const EventCalendar = () => {
   }, []);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading events...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading events...
+      </div>
+    );
   }
 
-  const dates = Object.keys(events);
+  const dates = Object.keys(events).sort();
 
   return (
     <div className="min-h-screen bg-gray-100 flex p-4">
