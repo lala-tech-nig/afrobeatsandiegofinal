@@ -2,36 +2,42 @@
 import { useState, useEffect } from "react";
 
 const EventCalendar = () => {
-  const [events, setEvents] = useState({});
+  const [eventsByDate, setEventsByDate] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Normalize a date into YYYY-MM-DD
-  const normalizeDate = (dateString) =>
-    new Date(dateString).toISOString().split("T")[0];
-
-  // Fetch and group events from API
+  // Fetch events from API
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch("https://afrobeatsandiegobackend.onrender.com/api/events"); // <-- replace with your backend endpoint
-        const json = await res.json();
+        const res = await fetch("https://afrobeatsandiegobackend.onrender.com/api/events");
+        const result = await res.json();
 
-        const grouped = {};
-        json.data.forEach((event) => {
-          const dateKey = normalizeDate(event.date); // e.g. "2025-09-25"
-          if (!grouped[dateKey]) grouped[dateKey] = [];
-          grouped[dateKey].push(event);
-        });
+        if (result?.data) {
+          // Group events by date (YYYY-MM-DD)
+          const grouped = result.data.reduce((acc, event) => {
+            const dateKey = new Date(event.date).toISOString().split("T")[0];
+            if (!acc[dateKey]) acc[dateKey] = [];
+            acc[dateKey].push({
+              id: event._id,
+              title: event.title,
+              time: event.time,
+              image: event.image,
+              description: event.description,
+              link: event.link,
+            });
+            return acc;
+          }, {});
 
-        setEvents(grouped);
+          setEventsByDate(grouped);
 
-        // auto-select the first available date
-        const firstDate = Object.keys(grouped).sort()[0];
-        if (firstDate) setSelectedDate(firstDate);
+          // Auto select the first available date
+          const firstDate = Object.keys(grouped)[0];
+          if (firstDate) setSelectedDate(firstDate);
+        }
       } catch (error) {
-        console.error("Failed to fetch events:", error);
+        console.error("Error fetching events:", error);
       } finally {
         setLoading(false);
       }
@@ -41,14 +47,10 @@ const EventCalendar = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading events...
-      </div>
-    );
+    return <div className="min-h-screen flex justify-center items-center">Loading events...</div>;
   }
 
-  const dates = Object.keys(events).sort();
+  const dates = Object.keys(eventsByDate);
 
   return (
     <div className="min-h-screen bg-gray-100 flex p-4">
@@ -71,7 +73,7 @@ const EventCalendar = () => {
               </li>
             ))
           ) : (
-            <li>No available dates</li>
+            <p>No event dates available.</p>
           )}
         </ul>
       </div>
@@ -81,13 +83,13 @@ const EventCalendar = () => {
         <h2 className="text-xl font-bold mb-4">
           {selectedDate
             ? `Events on ${new Date(selectedDate).toDateString()}`
-            : "Select a date to see events"}
+            : "Select a date"}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {selectedDate && events[selectedDate]?.length > 0 ? (
-            events[selectedDate].map((event) => (
+          {selectedDate && eventsByDate[selectedDate]?.length > 0 ? (
+            eventsByDate[selectedDate].map((event) => (
               <div
-                key={event._id}
+                key={event.id}
                 className="bg-white p-4 rounded-lg shadow hover:shadow-lg cursor-pointer transition"
                 onClick={() => setSelectedEvent(event)}
               >
@@ -129,9 +131,9 @@ const EventCalendar = () => {
                 href={selectedEvent.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 underline mt-2 inline-block"
+                className="mt-3 inline-block text-blue-600 underline"
               >
-                Visit Link
+                View More
               </a>
             )}
             <button
