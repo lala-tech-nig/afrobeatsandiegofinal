@@ -50,19 +50,14 @@ export function NavbarDemo() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/forms/book-call", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
+      // Use imported apiClient instead of fetch
+      const apiClient = (await import('@/lib/api')).default;
+      const response = await apiClient.post("/forms/book-call", form);
 
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
+      // apiClient handles throwing error on failure, so if we reach here, it's success.
+      // But need to adapt to existing logic:
+      // apiClient.post returns data directly.
 
-      const data = await response.json();
       setShowModal(false);
       setToastName(form.fullName);
       setShowToast(true);
