@@ -14,7 +14,7 @@ export default function HeroCarousel() {
 
     const fetchCarouselImages = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/carousel');
+            const response = await fetch('https://afrobeatsandiegofinal.onrender.com/api/carousel');
             const data = await response.json();
             if (data.success && Array.isArray(data.data)) {
                 setImages(data.data);

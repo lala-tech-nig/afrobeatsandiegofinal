@@ -44,7 +44,7 @@ const CalendarWithEvents = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/events"
+          "https://afrobeatsandiegofinal.onrender.com/api/events"
         );
         const json = await res.json();
 
