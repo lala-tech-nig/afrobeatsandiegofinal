@@ -15,6 +15,7 @@ import ImageCarousel from "./ImageCarousel";
 import WeatherTimeWidget from "./WeatherTimeWidget";
 import SpotifyPlaylistEmbed from "./Player";
 import { Dialog } from "@headlessui/react";
+import HeroCarousel from "./HeroCarousel";
 
 export function NavbarDemo() {
   const navItems = [
@@ -49,7 +50,7 @@ export function NavbarDemo() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://afrobeatsandiegobackend.onrender.com/api/forms/book-call", {
+      const response = await fetch("http://localhost:5000/api/forms/book-call", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,7 +191,7 @@ export function NavbarDemo() {
         <div className="mt-14">
           <SpotifyPlaylistEmbed />
         </div>
-        <ImageCarousel />
+        <HeroCarousel />
       </div>
     </div>
   );
@@ -205,7 +206,7 @@ const DummyContent = () => {
         component is <span className="font-medium">fixed</span> and will not move when scrolling.
       </p>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        {[1,2,3,4,5,6,7,8,9,10].map(id => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(id => (
           <div key={id} className="md:col-span-1 h-60 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center rounded-lg p-4 shadow-sm">
             <h2 className="text-xl font-medium">Box {id}</h2>
           </div>

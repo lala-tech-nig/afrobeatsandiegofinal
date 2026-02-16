@@ -58,7 +58,6 @@ export default function Home() {
 
   return (
     <main>
-      <HeroCarousel />
       <div
         className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col items-center"
         style={{ backgroundImage: `url('${navbarBg}')` }}

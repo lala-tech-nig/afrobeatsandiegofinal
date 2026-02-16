@@ -29,6 +29,7 @@ app.use('/api/connect', require('./routes/connect'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/carousel', require('./routes/carousel'));
+app.use('/api/forms', require('./routes/forms'));
 
 // Root route
 app.get('/', (req, res) => {

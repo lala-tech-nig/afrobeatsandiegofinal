@@ -33,19 +33,25 @@ export default function AdminNews() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.thumbnail) {
+            alert('Please upload a thumbnail image');
+            return;
+        }
+
         try {
             if (editingNews) {
                 await apiClient.put(`/news/${editingNews._id}`, formData);
-                alert('News updated!');
+                alert('News updated successfully!');
             } else {
                 await apiClient.post('/news', formData);
-                alert('News created!');
+                alert('News created successfully!');
             }
             setShowModal(false);
             resetForm();
             fetchNews();
         } catch (error) {
-            alert('Failed to save news');
+            console.error('Save error:', error);
+            alert(error.message || 'Failed to save news');
         }
     };
 
@@ -56,7 +62,7 @@ export default function AdminNews() {
             alert('News deleted!');
             fetchNews();
         } catch (error) {
-            alert('Failed to delete');
+            alert(error.message || 'Failed to delete');
         }
     };
 
@@ -94,7 +100,7 @@ export default function AdminNews() {
             });
 
             if (response.success) {
-                setFormData({ ...formData, thumbnail: response.url });
+                setFormData(prev => ({ ...prev, thumbnail: response.url }));
             }
         } catch (error) {
             alert('Failed to upload image: ' + error.message);
@@ -107,7 +113,7 @@ export default function AdminNews() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">News Management</h1>
                 <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
                     <Plus size={20} /> Add News
@@ -138,8 +144,8 @@ export default function AdminNews() {
             </div>
 
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl p-8 max-w-2xl w-full">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <h2 className="text-2xl font-bold mb-6">{editingNews ? 'Edit News' : 'Add News'}</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -183,7 +189,7 @@ export default function AdminNews() {
                                 <label className="text-sm font-medium text-gray-700">Mark as Trending</label>
                             </div>
                             <div className="flex gap-4 pt-4">
-                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className="flex-1 px-4 py-2 border rounded-lg">Cancel</button>
+                                <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
                                 <button
                                     type="submit"
                                     disabled={uploading}

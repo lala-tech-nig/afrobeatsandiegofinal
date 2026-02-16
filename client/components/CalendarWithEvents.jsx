@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
-import { Dialog } from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
@@ -263,10 +263,10 @@ const CalendarWithEvents = () => {
       <Dialog
         open={!!selectedEvent}
         onClose={() => setSelectedEvent(null)}
-        className="fixed inset-0 z-50 flex items-center justify-center"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/50" />
+        <DialogPanel className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 z-50 max-h-[90vh] overflow-y-auto">
           {selectedEvent && (
             <>
               <img
@@ -300,17 +300,17 @@ const CalendarWithEvents = () => {
               </button>
             </>
           )}
-        </div>
+        </DialogPanel>
       </Dialog>
 
       {/* Add Event Modal */}
       <Dialog
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
-        className="fixed inset-0 z-50 flex items-center justify-center"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
       >
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 z-50">
+        <DialogBackdrop className="fixed inset-0 bg-black/50" />
+        <DialogPanel className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 p-6 z-50 max-h-[90vh] overflow-y-auto">
           <h2 className="text-xl font-bold mb-4">Add Your Event</h2>
           <form onSubmit={handleAddEvent} className="space-y-3">
             <input
@@ -402,7 +402,7 @@ const CalendarWithEvents = () => {
               </button>
             </div>
           </form>
-        </div>
+        </DialogPanel>
       </Dialog>
 
       {/* Toast */}

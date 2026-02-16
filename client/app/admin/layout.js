@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,10 +12,14 @@ import {
     FileText,
     LogOut,
     LayoutDashboard,
-    Image
+    Image,
+    Menu,
+    X,
+    Phone
 } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const pathname = usePathname();
     const { logout, admin } = useAuth();
 
@@ -29,16 +34,33 @@ export default function AdminLayout({ children }) {
         { name: 'Shop', href: '/admin/shop', icon: ShoppingBag },
         { name: 'Carousel', href: '/admin/carousel', icon: Image },
         { name: 'Submissions', href: '/admin/submissions', icon: FileText },
+        { name: 'Book a Call', href: '/admin/book-call', icon: Phone },
     ];
 
     return (
         <ProtectedRoute>
-            <div className="min-h-screen bg-gray-50 flex">
+            <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+                {/* Mobile Header */}
+                <div className="md:hidden bg-black text-white p-4 flex justify-between items-center">
+                    <h1 className="text-xl font-bold">Admin Portal</h1>
+                    <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                        {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
+
                 {/* Sidebar */}
-                <aside className="w-64 bg-gradient-to-b from-purple-900 to-black text-white">
-                    <div className="p-6">
-                        <h1 className="text-2xl font-bold">Admin Portal</h1>
-                        <p className="text-sm text-purple-200 mt-1">Afrobeats San Diego</p>
+                <aside
+                    className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-purple-900 to-black text-white transform transition-transform duration-200 ease-in-out md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                        }`}
+                >
+                    <div className="p-6 flex justify-between items-center">
+                        <div>
+                            <h1 className="text-2xl font-bold">Admin Portal</h1>
+                            <p className="text-sm text-purple-200 mt-1">Afrobeats San Diego</p>
+                        </div>
+                        <button onClick={() => setIsSidebarOpen(false)} className="md:hidden">
+                            <X size={24} />
+                        </button>
                     </div>
 
                     <nav className="mt-6">
@@ -49,6 +71,7 @@ export default function AdminLayout({ children }) {
                                 <Link
                                     key={item.href}
                                     href={item.href}
+                                    onClick={() => setIsSidebarOpen(false)}
                                     className={`flex items-center gap-3 px-6 py-3 transition ${isActive
                                         ? 'bg-purple-700 border-l-4 border-white'
                                         : 'hover:bg-purple-800'
@@ -78,9 +101,17 @@ export default function AdminLayout({ children }) {
                     </div>
                 </aside>
 
+                {/* Overlay for mobile */}
+                {isSidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                        onClick={() => setIsSidebarOpen(false)}
+                    ></div>
+                )}
+
                 {/* Main Content */}
-                <main className="flex-1 overflow-auto">
-                    <div className="p-8">
+                <main className="flex-1 overflow-auto h-[calc(100vh-64px)] md:h-screen">
+                    <div className="p-4 md:p-8">
                         {children}
                     </div>
                 </main>

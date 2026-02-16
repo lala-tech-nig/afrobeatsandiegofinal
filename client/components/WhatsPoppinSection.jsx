@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import VideoCard from "./CardOption";
-import afrobeatsData from "../data/afrobeats";
+import apiClient from "../lib/api";
 
 function getCounts() {
   if (typeof window !== "undefined" && window.innerWidth < 640) {
@@ -15,7 +15,24 @@ function getCounts() {
 const WhatsPoppinSection = () => {
   const [counts, setCounts] = useState(getCounts());
   const [visibleCount, setVisibleCount] = useState(counts.initial);
-  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await apiClient.get('/news');
+        setPosts(response.data || []);
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   // Update counts on resize (for responsive behavior)
   useEffect(() => {
@@ -28,18 +45,25 @@ const WhatsPoppinSection = () => {
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-    // eslint-disable-next-line
   }, []);
 
-  const visibleItems = afrobeatsData.slice(0, visibleCount);
+  const visibleItems = posts.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    setLoading(true);
+    setLoadingMore(true);
     setTimeout(() => {
       setVisibleCount((prev) => prev + counts.loadMore);
-      setLoading(false);
+      setLoadingMore(false);
     }, 800);
   };
+
+  if (loading) {
+    return (
+      <div className="w-full py-16 px-6 flex justify-center items-center text-white" style={{ minHeight: '400px', backgroundImage: `url('/africabg.png')` }}>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -47,25 +71,29 @@ const WhatsPoppinSection = () => {
       style={{ backgroundImage: `url('/africabg.png')` }}
     >
       {/* Section Header */}
-<div className="flex flex-col items-center mb-10">
-  <div className="w-full max-w-xs sm:max-w-md rounded-2xl bg-white flex justify-center">
-    <h2 className="py-5 text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg text-center w-full">
-      What's poppin
-    </h2>
-  </div>
-  <div className="mt-3 w-24 sm:w-32 h-3 rounded-2xl bg-white"></div>
-</div>
+      <div className="flex flex-col items-center mb-10">
+        <div className="w-full max-w-xs sm:max-w-md rounded-2xl bg-white flex justify-center">
+          <h2 className="py-5 text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg text-center w-full">
+            What's poppin
+          </h2>
+        </div>
+        <div className="mt-3 w-24 sm:w-32 h-3 rounded-2xl bg-white"></div>
+      </div>
 
       <div className="flex flex-wrap gap-6 justify-center">
-        {visibleItems.map((item) => (
-          <div key={item.id} className="w-full sm:w-[45%] md:w-[22%]">
-            <VideoCard data={item} />
-          </div>
-        ))}
+        {visibleItems.length > 0 ? (
+          visibleItems.map((item) => (
+            <div key={item._id || item.id} className="w-full sm:w-[45%] md:w-[22%]">
+              <VideoCard data={item} />
+            </div>
+          ))
+        ) : (
+          <p className="text-xl text-white">No news posts available at the moment.</p>
+        )}
       </div>
 
       <div className="flex justify-center mt-8">
-        {visibleCount >= afrobeatsData.length ? null : loading ? (
+        {visibleCount >= posts.length ? null : loadingMore ? (
           <button
             className="bg-white text-black px-6 py-2 rounded-full font-semibold shadow disabled:opacity-60"
             disabled

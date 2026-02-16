@@ -35,8 +35,29 @@ export default function AdminShop() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.image) {
+            alert("Please upload an image first.");
+            return;
+        }
+
+        if (!formData.purchaseLink) {
+            alert("Please enter a purchase link.");
+            return;
+        }
+
         try {
-            const dataToSend = { ...formData, price: Number(formData.price) };
+            // Ensure price is a valid number
+            const priceValue = parseFloat(formData.price);
+            const validPrice = isNaN(priceValue) ? 0 : priceValue;
+
+            const dataToSend = {
+                ...formData,
+                price: validPrice
+            };
+
+            console.log("Sending shop item:", dataToSend);
+
             if (editingItem) {
                 await apiClient.put(`/shop/${editingItem._id}`, dataToSend);
                 alert('Item updated!');
@@ -48,7 +69,9 @@ export default function AdminShop() {
             resetForm();
             fetchItems();
         } catch (error) {
-            alert('Failed to save item');
+            console.error("Save error:", error);
+            const message = error.response?.data?.message || 'Failed to save item';
+            alert(message);
         }
     };
 
@@ -89,17 +112,18 @@ export default function AdminShop() {
         if (!file) return;
 
         setUploading(true);
+        setUploading(true);
         try {
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('folder', 'shop');
+            const uploadData = new FormData();
+            uploadData.append('image', file);
+            uploadData.append('folder', 'shop');
 
-            const response = await apiClient.post('/upload', formData, {
+            const response = await apiClient.post('/upload', uploadData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             if (response.success) {
-                setFormData({ ...formData, image: response.url });
+                setFormData(prev => ({ ...prev, image: response.url }));
             }
         } catch (error) {
             alert('Failed to upload image: ' + error.message);

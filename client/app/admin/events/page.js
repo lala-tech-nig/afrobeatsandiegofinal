@@ -124,7 +124,7 @@ export default function AdminEvents() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <h1 className="text-3xl font-bold text-gray-900">Events Management</h1>
                 <button
                     onClick={() => setShowModal(true)}
@@ -136,45 +136,47 @@ export default function AdminEvents() {
             </div>
 
             <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {events.map((event) => (
-                            <tr key={event._id}>
-                                <td className="px-6 py-4">
-                                    <div className="flex items-center gap-3">
-                                        {event.image && (
-                                            <img src={event.image} alt={event.title} className="w-12 h-12 rounded object-cover" />
-                                        )}
-                                        <div>
-                                            <div className="text-sm font-medium text-gray-900">{event.title}</div>
-                                            <div className="text-sm text-gray-500">{event.description.substring(0, 50)}...</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
-                                    {new Date(event.date).toLocaleDateString()} - {event.time}
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-500">{event.location || 'N/A'}</td>
-                                <td className="px-6 py-4 text-right text-sm font-medium">
-                                    <button onClick={() => handleEdit(event)} className="text-blue-600 hover:text-blue-900 mr-4">
-                                        <Edit size={18} />
-                                    </button>
-                                    <button onClick={() => handleDelete(event._id)} className="text-red-600 hover:text-red-900">
-                                        <Trash2 size={18} />
-                                    </button>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {events.map((event) => (
+                                <tr key={event._id}>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            {event.image && (
+                                                <img src={event.image} alt={event.title} className="w-12 h-12 rounded object-cover" />
+                                            )}
+                                            <div>
+                                                <div className="text-sm font-medium text-gray-900">{event.title}</div>
+                                                <div className="text-sm text-gray-500">{event.description.substring(0, 50)}...</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                        {new Date(event.date).toLocaleDateString()} - {event.time}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{event.location || 'N/A'}</td>
+                                    <td className="px-6 py-4 text-right text-sm font-medium">
+                                        <button onClick={() => handleEdit(event)} className="text-blue-600 hover:text-blue-900 mr-4">
+                                            <Edit size={18} />
+                                        </button>
+                                        <button onClick={() => handleDelete(event._id)} className="text-red-600 hover:text-red-900">
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {showModal && (

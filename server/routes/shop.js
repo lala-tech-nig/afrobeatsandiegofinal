@@ -34,10 +34,25 @@ router.get('/:id', async (req, res) => {
 // @desc    Create shop item
 // @access  Private (Admin only)
 router.post('/', authMiddleware, async (req, res) => {
+    console.log('POST /api/shop receive:', req.body);
     try {
-        const item = await ShopItem.create(req.body);
+        const { title, description, price, image, purchaseLink, category, inStock } = req.body;
+
+        // Explicitly construct object to avoid prototype issues
+        const newItemData = {
+            title,
+            description,
+            price,
+            image,
+            purchaseLink,
+            category: category || 'merchandise',
+            inStock: inStock !== undefined ? inStock : true
+        };
+
+        const item = await ShopItem.create(newItemData);
         res.status(201).json({ success: true, data: item });
     } catch (error) {
+        console.error("Shop create error:", error);
         res.status(400).json({ success: false, message: error.message });
     }
 });

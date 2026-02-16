@@ -21,7 +21,7 @@ const shopItemSchema = new mongoose.Schema({
     },
     purchaseLink: {
         type: String,
-        required: true
+        required: false // Made optional to allow items without external links
     },
     category: {
         type: String,
