@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 import ConnectForm from "@/components/ConnectForm";
 import ShoppingSectionNew from "@/components/ShoppingSectionNew";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -57,6 +58,7 @@ export default function Home() {
 
   return (
     <main>
+      <HeroCarousel />
       <div
         className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col items-center"
         style={{ backgroundImage: `url('${navbarBg}')` }}

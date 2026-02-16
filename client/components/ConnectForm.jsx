@@ -27,10 +27,26 @@ export default function ConnectForm({ onSubmit }) {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
   const handleSubmit = () => {
-    setSubmitted(true);
-    setShowConfetti(true);
-    if (onSubmit) onSubmit(); // <-- Call parent onSubmit to close modal
-    setTimeout(() => setShowConfetti(false), 5000);
+    // Save to backend
+    fetch('http://localhost:5000/api/connect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setSubmitted(true);
+        setShowConfetti(true);
+        if (onSubmit) onSubmit();
+        setTimeout(() => setShowConfetti(false), 5000);
+      })
+      .catch((err) => {
+        console.error('Failed to submit form:', err);
+        setSubmitted(true);
+        setShowConfetti(true);
+        if (onSubmit) onSubmit();
+        setTimeout(() => setShowConfetti(false), 5000);
+      });
   };
 
   return (
@@ -64,9 +80,8 @@ export default function ConnectForm({ onSubmit }) {
                       {roles.map((role) => (
                         <button
                           key={role}
-                          className={`p-2 rounded-md ${
-                            formData.role === role ? 'bg-purple-800' : 'bg-purple-600'
-                          } hover:bg-purple-900`}
+                          className={`p-2 rounded-md ${formData.role === role ? 'bg-purple-800' : 'bg-purple-600'
+                            } hover:bg-purple-900`}
                           onClick={() => updateField('role', role)}
                         >
                           {role}

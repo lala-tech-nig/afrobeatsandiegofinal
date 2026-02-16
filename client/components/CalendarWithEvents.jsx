@@ -44,7 +44,7 @@ const CalendarWithEvents = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(
-          "https://afrobeatsandiegobackend.onrender.com/api/events"
+          "http://localhost:5000/api/events"
         );
         const json = await res.json();
 
@@ -106,11 +106,10 @@ const CalendarWithEvents = () => {
         <div key={d} className="flex flex-col items-center">
           <button
             onClick={() => setSelectedDate(dateKey)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition mb-0.5 ${
-              selectedDate === dateKey
-                ? "bg-white text-black"
-                : "hover:bg-white/20 text-white"
-            }`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition mb-0.5 ${selectedDate === dateKey
+              ? "bg-white text-black"
+              : "hover:bg-white/20 text-white"
+              }`}
           >
             {d}
           </button>
@@ -158,7 +157,7 @@ const CalendarWithEvents = () => {
     if (addForm.image) formData.append("image", addForm.image);
 
     try {
-      await fetch("https://afrobeatsandiegobackend.onrender.com/api/calendar", {
+      await fetch("http://localhost:5000/api/calendar", {
         method: "POST",
         body: formData,
       });
